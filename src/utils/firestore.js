@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where, orderBy, addDoc, serverTimestamp } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from '../firebase'
 
 // Only ever reads products explicitly marked "Show on public website" by
 // staff — the security rules enforce this same restriction server-side too.
