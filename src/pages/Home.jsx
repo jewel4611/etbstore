@@ -6,10 +6,14 @@ import RequestModal from '../components/RequestModal'
 export default function Home() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
   const [requesting, setRequesting] = useState(null) // null | 'general' | equipment object
 
   useEffect(() => {
-    listPublicEquipment().then(setItems).finally(() => setLoading(false))
+    listPublicEquipment()
+      .then(setItems)
+      .catch(err => { console.error('Failed to load equipment:', err); setError(true) })
+      .finally(() => setLoading(false))
   }, [])
 
   return (
@@ -28,6 +32,10 @@ export default function Home() {
 
         {loading ? (
           <p style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading equipment...</p>
+        ) : error ? (
+          <div className="empty-state">
+            <p>We couldn't load the equipment list right now. Please refresh the page, or use "Request a Quote" above and we'll get back to you directly.</p>
+          </div>
         ) : items.length === 0 ? (
           <div className="empty-state">
             <p>Our equipment listing is being updated. Please use "Request a Quote" above and tell us what you need — we'll get back to you.</p>
